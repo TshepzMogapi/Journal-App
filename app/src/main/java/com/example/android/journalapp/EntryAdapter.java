@@ -10,17 +10,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
+
 
 
 
 public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHolder> {
 
 
+    final private ListItemClickListener mOnClickListener;
+
+
     private int mEntryItems;
 
-    public EntryAdapter(int numberOfItems) {
+    public interface ListItemClickListener {
+
+        void onListItemClick(int clickedItemIndex);
+    }
+
+
+    public EntryAdapter(int numberOfItems, ListItemClickListener listItemClickListener) {
 
         mEntryItems = numberOfItems;
+
+        mOnClickListener = listItemClickListener;
 
     }
 
@@ -59,7 +72,7 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
     }
 
 
-    class EntryViewHolder extends RecyclerView.ViewHolder {
+    class EntryViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
 
         TextView listItemEntryView;
@@ -68,6 +81,19 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
             super(itemView);
 
             listItemEntryView = (TextView) itemView.findViewById(R.id.tv_item_entry);
+
+
+            itemView.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            int clickedPosition = getAdapterPosition();
+
+            mOnClickListener.onListItemClick(clickedPosition);
 
         }
 

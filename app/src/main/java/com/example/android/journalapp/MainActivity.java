@@ -4,8 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+
+
+public class MainActivity extends AppCompatActivity implements EntryAdapter.ListItemClickListener{
 
     //todo Remove below line
     private static final int NUM_LIST_ITEMS = 100;
@@ -13,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private EntryAdapter mAdapter;
 
     private RecyclerView mEntryList;
+
+    Toast mToast;
 
 
     @Override
@@ -29,8 +35,41 @@ public class MainActivity extends AppCompatActivity {
 
         mEntryList.setHasFixedSize(true);
 
-        mAdapter = new EntryAdapter(NUM_LIST_ITEMS);
+        mAdapter = new EntryAdapter(NUM_LIST_ITEMS, this);
 
         mEntryList.setAdapter(mAdapter);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+
+            case R.id.action_refresh:
+                mAdapter = new EntryAdapter(NUM_LIST_ITEMS, this);
+                mEntryList.setAdapter(mAdapter);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+
+        if (mToast != null) {
+            mToast.cancel();
+        }
+
+        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
+        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+
+        mToast.show();
+
+    }
+
 }
