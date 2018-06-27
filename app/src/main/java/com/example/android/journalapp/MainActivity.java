@@ -1,18 +1,23 @@
 package com.example.android.journalapp;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 
 public class MainActivity extends AppCompatActivity implements EntryAdapter.ListItemClickListener{
 
     //todo Remove below line
-    private static final int NUM_LIST_ITEMS = 100;
+    private static final int NUM_LIST_ITEMS = 5;
 
     private EntryAdapter mAdapter;
 
@@ -35,9 +40,24 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
 
         mEntryList.setHasFixedSize(true);
 
-        mAdapter = new EntryAdapter(NUM_LIST_ITEMS, this);
+        mAdapter = new EntryAdapter(this, this);
 
         mEntryList.setAdapter(mAdapter);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
+        mEntryList.addItemDecoration(decoration);
+
+
+
+        FloatingActionButton fabButton = findViewById(R.id.fab);
+
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addEntryIntent = new Intent(MainActivity.this, AddEntryActivity.class);
+                startActivity(addEntryIntent);
+            }
+        });
     }
 
     @Override
@@ -48,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
         switch (itemId) {
 
             case R.id.action_refresh:
-                mAdapter = new EntryAdapter(NUM_LIST_ITEMS, this);
+                mAdapter = new EntryAdapter(this, this);
                 mEntryList.setAdapter(mAdapter);
                 return true;
         }
