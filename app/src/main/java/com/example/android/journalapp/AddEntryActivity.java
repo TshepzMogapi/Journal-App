@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.android.journalapp.database.AppDatabase;
+import com.example.android.journalapp.database.DiaryEntry;
+
+import java.util.Date;
+
 /**
  * Created by tshepisomogapi on 2018/06/28.
  */
@@ -23,11 +28,15 @@ public class AddEntryActivity extends AppCompatActivity{
 
     private int mEntryId = DEFAULT_ENTRY_ID;
 
+    AppDatabase appDatabase;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_entry);
 
         initViews();
+
+        appDatabase = AppDatabase.getInstance(getApplicationContext());
 
 
         Intent intent = getIntent();
@@ -55,6 +64,16 @@ public class AddEntryActivity extends AppCompatActivity{
     }
 
     public void onSaveButtonClicked() {
-        // Save Some stuff
+
+
+        String description = mEditText.getText().toString();
+
+        Date date = new Date();
+
+        DiaryEntry diaryEntry = new DiaryEntry(description,date);
+
+        appDatabase.entryDao().insertEntry(diaryEntry);
+
+        finish();
     }
 }
