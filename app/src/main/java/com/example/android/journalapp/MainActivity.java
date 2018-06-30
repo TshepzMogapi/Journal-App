@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
     private AppDatabase mAppDatabase;
 
     private RecyclerView mEntryList;
+
+
+    private static final String TAG = AddEntryActivity.class.getSimpleName();
 
 
     @Override
@@ -85,6 +89,14 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
     protected void onResume() {
         super.onResume();
 
+        retrieveEntries();
+
+    }
+
+    private void retrieveEntries() {
+
+        Log.d(TAG, "Calle d Called");
+
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -102,10 +114,11 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick(int clickedItemId) {
 
-
-
+        Intent intent = new Intent(MainActivity.this, AddEntryActivity.class);
+        intent.putExtra(AddEntryActivity.EXTRA_ENTRY_ID, clickedItemId);
+        startActivity(intent);
     }
 
 }

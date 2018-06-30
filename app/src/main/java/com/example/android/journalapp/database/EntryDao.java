@@ -15,6 +15,10 @@ import java.util.List;
 @Dao
 public interface EntryDao {
 
+
+    @Query("SELECT * FROM entry WHERE id = :id")
+    DiaryEntry loadEntryById(int id);
+
     @Query("SELECT * FROM entry ORDER BY updated_at")
     List<DiaryEntry> loadAllEntries();
 

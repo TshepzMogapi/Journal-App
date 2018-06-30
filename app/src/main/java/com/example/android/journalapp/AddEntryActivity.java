@@ -21,6 +21,9 @@ public class AddEntryActivity extends AppCompatActivity{
 
     public static final String EXTRA_ENTRY_ID = "extraTaskId";
 
+    public static final String INSTANCE_ENTRY_ID = "instanceEntryId";
+
+
     private static final int DEFAULT_ENTRY_ID = -1;
 
     EditText mEditText;
@@ -39,16 +42,43 @@ public class AddEntryActivity extends AppCompatActivity{
         mAppDatabase = AppDatabase.getInstance(getApplicationContext());
 
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_ENTRY_ID)) {
+            mEntryId = savedInstanceState.getInt(INSTANCE_ENTRY_ID, DEFAULT_ENTRY_ID);
+        }
+
         Intent intent = getIntent();
 
         if (intent != null && intent.hasExtra(EXTRA_ENTRY_ID)) {
             mButton.setText("Modify");
+
             if (mEntryId == DEFAULT_ENTRY_ID) {
-                // populate the UI
+
+                mEntryId = intent.getIntExtra(EXTRA_ENTRY_ID, DEFAULT_ENTRY_ID);
+
+                AppExecutors.getInstance().diskIO().execute(new  Runnable() {
+                    @Override
+                    public void run() {
+
+                        final DiaryEntry diaryEntry = mAppDatabase.entryDao().loadEntryById(mEntryId);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateUI(diaryEntry);
+                            }
+                        });
+                    }
+                });
             }
         }
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(INSTANCE_ENTRY_ID, mEntryId);
+        super.onSaveInstanceState(outState);
     }
 
     private void initViews() {
@@ -63,6 +93,16 @@ public class AddEntryActivity extends AppCompatActivity{
         });
     }
 
+    private void populateUI(DiaryEntry diaryEntry) {
+
+        if (diaryEntry == null) {
+            return;
+        }
+
+        mEditText.setText(diaryEntry.getDescription());
+
+    }
+
     public void onSaveButtonClicked() {
 
 
@@ -75,7 +115,16 @@ public class AddEntryActivity extends AppCompatActivity{
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mAppDatabase.entryDao().insertEntry(diaryEntry);
+
+                if (mEntryId == DEFAULT_ENTRY_ID) {
+                    // insert new task
+                    mAppDatabase.entryDao().insertEntry(diaryEntry);
+                } else {
+                    //update task
+                    diaryEntry.setId(mEntryId);
+                    mAppDatabase.entryDao().updateEntry(diaryEntry);
+                }
+
                 finish();
             }
         });
