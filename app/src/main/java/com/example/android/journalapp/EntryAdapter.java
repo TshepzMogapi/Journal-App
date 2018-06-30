@@ -94,6 +94,11 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
 
     }
 
+    public void setEntries(List<DiaryEntry> diaryEntries) {
+        mDiaryEntries = diaryEntries;
+        notifyDataSetChanged();
+    }
+
 
     class EntryViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
