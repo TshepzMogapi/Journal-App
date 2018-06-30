@@ -28,7 +28,7 @@ public class AddEntryActivity extends AppCompatActivity{
 
     private int mEntryId = DEFAULT_ENTRY_ID;
 
-    AppDatabase appDatabase;
+    AppDatabase mAppDatabase;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class AddEntryActivity extends AppCompatActivity{
 
         initViews();
 
-        appDatabase = AppDatabase.getInstance(getApplicationContext());
+        mAppDatabase = AppDatabase.getInstance(getApplicationContext());
 
 
         Intent intent = getIntent();
@@ -70,10 +70,14 @@ public class AddEntryActivity extends AppCompatActivity{
 
         Date date = new Date();
 
-        DiaryEntry diaryEntry = new DiaryEntry(description,date);
+        final DiaryEntry diaryEntry = new DiaryEntry(description, date);
 
-        appDatabase.entryDao().insertEntry(diaryEntry);
-
-        finish();
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mAppDatabase.entryDao().insertEntry(diaryEntry);
+                finish();
+            }
+        });
     }
 }

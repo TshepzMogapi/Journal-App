@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.android.journalapp.database.AppDatabase;
+import com.example.android.journalapp.database.DiaryEntry;
+
+import java.util.List;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
@@ -82,9 +85,20 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
     protected void onResume() {
         super.onResume();
 
-        mAdapter.setEntries(mAppDatabase.entryDao().loadAllEntries());
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
 
+                final List<DiaryEntry> entries = mAppDatabase.entryDao().loadAllEntries();
 
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.setEntries(entries);
+                    }
+                });
+            }
+        });
     }
 
     @Override
