@@ -37,9 +37,8 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
-
 
         mEntryList = (RecyclerView) findViewById(R.id.rv_diary_entries);
 
