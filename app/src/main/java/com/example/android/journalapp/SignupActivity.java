@@ -78,7 +78,6 @@ public class SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
