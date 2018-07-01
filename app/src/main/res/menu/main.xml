@@ -2,15 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 
 
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
+
     <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="1"
-        android:title="Refresh"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:title="Sign Out"
+        android:tint="@android:color/white"
+        />
 
 
 </menu>

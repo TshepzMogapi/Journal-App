@@ -24,7 +24,6 @@
 
         <activity android:name="com.example.android.journalapp.SignInActivity"/>
 
-        <activity android:name="com.example.android.journalapp.LoginActivity"/>
         <activity android:name="com.example.android.journalapp.SignupActivity"/>
 
     </application>
