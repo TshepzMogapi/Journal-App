@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
 
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
-        
+
 
         mEntryList = (RecyclerView) findViewById(R.id.rv_diary_entries);
 
@@ -80,9 +80,12 @@ public class MainActivity extends AppCompatActivity implements EntryAdapter.List
             }
         });
 
+        Button goToApp = findViewById(R.id.go_to_app);
+
+
+
         mAppDatabase = AppDatabase.getInstance(getApplicationContext());
     }
-
 
 
 

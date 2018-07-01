@@ -7,6 +7,13 @@
     android:weightSum="4"
     tools:context=".SignInActivity">
 
+    <Button
+        android:id="@+id/go_to_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Continue to Your Journal..." />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

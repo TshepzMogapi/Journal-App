@@ -1,3 +1,5 @@
+
+
 package com.example.android.journalapp;
 
 import android.support.annotation.NonNull;
@@ -10,7 +12,6 @@ import android.util.Log;
 import android.content.Intent;
 import android.view.View;
 
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +24,15 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+
+
 /**
  * Created by tshepisomogapi on 2018/07/01.
  */
 
-public class SignInActivity extends AppCompatActivity  implements
+
+public class SignOutActivity extends AppCompatActivity  implements
         View.OnClickListener {
-
-
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -48,7 +50,6 @@ public class SignInActivity extends AppCompatActivity  implements
         mStatusTextView = findViewById(R.id.status);
 
         // Button listeners
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
 //        findViewById(R.id.disconnect_button).setOnClickListener(this);
 
@@ -65,21 +66,7 @@ public class SignInActivity extends AppCompatActivity  implements
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // [END build_client]
 
-        // [START customize_button]
-        // Set the dimensions of the sign-in button.
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-        // [END customize_button]
 
-        Button gotToApp = (Button) findViewById(R.id.go_to_app);
-
-        gotToApp.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        
     }
 
     @Override
@@ -94,62 +81,9 @@ public class SignInActivity extends AppCompatActivity  implements
         // [END on_start_sign_in]
     }
 
-    // [START onActivityResult]
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Toast.makeText(this, "Already signed In", Toast.LENGTH_SHORT).show();
-
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-    // [END onActivityResult]
-
-    // [START handleSignInResult]
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            Toast.makeText(this, "Signed In", Toast.LENGTH_SHORT).show();
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
-
-            Toast.makeText(this, "Account Update", Toast.LENGTH_SHORT).show();
-
-
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-
-            Toast.makeText(this, "Failed Update", Toast.LENGTH_SHORT).show();
-
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
-        }
-    }
-    // [END handleSignInResult]
-
-    // [START signIn]
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-
-        Intent main = new Intent(SignInActivity.this, MainActivity.class);
-        startActivity(main);
-    }
-    // [END signIn]
 
     // [START signOut]
-    private void signOut() {
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -193,9 +127,7 @@ public class SignInActivity extends AppCompatActivity  implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
+
             case R.id.sign_out_button:
                 signOut();
                 break;
@@ -204,7 +136,6 @@ public class SignInActivity extends AppCompatActivity  implements
 //                break;
         }
     }
-
 
 
 
